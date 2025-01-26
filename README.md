@@ -7,6 +7,6 @@ invaderware is a scripthub that consists of multiple tabs for specified games to
 some scripts included in this scripthub are not made by me. ( some are )
 
 the scripthub itself has a whitelist so add me on discord if you are interested "@observehere"
-but this repository only focusses on the scripts i make myself instead of the scripthub i mentioned
+but this repository only focuses on the scripts i make myself instead of the scripthub i mentioned
 
 DISCORD SERVER: https://discord.gg/BcFGcMAXwj
