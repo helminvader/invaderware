@@ -1,0 +1,119 @@
+MADE BY helminvader
+-- Circling Script with GUI and Ground Movement
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local radius = 10
+local speed = 5 -- Increased speed for faster circling
+local connections = {}
+
+-- Function to circle around a target
+local function circleAround(target)
+    local angle = 0
+    local connection
+    connection = game:GetService("RunService").RenderStepped:Connect(function()
+        if target and target:FindFirstChild("HumanoidRootPart") then
+            local targetPosition = target.HumanoidRootPart.Position
+            local offset = Vector3.new(math.cos(angle) * radius, 0, math.sin(angle) * radius) -- Stay on the ground
+            if character:FindFirstChild("HumanoidRootPart") then
+                character.HumanoidRootPart.CFrame = CFrame.new(targetPosition + offset)
+                character.HumanoidRootPart.Velocity = Vector3.zero -- Prevent unintended flying
+            end
+            angle = angle + speed * 0.03
+        else
+            connection:Disconnect()
+        end
+    end)
+    table.insert(connections, connection)
+end
+
+-- Function to stop all circles
+local function stopCircles()
+    for _, connection in pairs(connections) do
+        connection:Disconnect()
+    end
+    connections = {}
+end
+
+-- Create GUI
+local screenGui = Instance.new("ScreenGui", game.CoreGui)
+screenGui.Name = "CircleGui (made by helminvader)"
+
+local frame = Instance.new("Frame", screenGui)
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.BorderSizePixel = 0
+frame.Draggable = true
+frame.Active = true
+
+local titleLabel = Instance.new("TextLabel", frame)
+titleLabel.Size = UDim2.new(1, 0, 0, 30)
+titleLabel.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+titleLabel.Text = "Circle Players GUI (made by helminvader)"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.TextSize = 12
+
+titleLabel.TextScaled = true
+local inputBox = Instance.new("TextBox", frame)
+inputBox.Size = UDim2.new(1, -20, 0, 30)
+inputBox.Position = UDim2.new(0, 10, 0, 40)
+inputBox.PlaceholderText = "Enter player name..."
+inputBox.Text = ""
+inputBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+inputBox.TextColor3 = Color3.new(1, 1, 1)
+inputBox.TextSize = 16
+
+local startButton = Instance.new("TextButton", frame)
+startButton.Size = UDim2.new(1, -20, 0, 30)
+startButton.Position = UDim2.new(0, 10, 0, 80)
+startButton.Text = "Start Circling"
+startButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+startButton.TextColor3 = Color3.new(1, 1, 1)
+startButton.TextSize = 16
+
+local stopButton = Instance.new("TextButton", frame)
+stopButton.Size = UDim2.new(1, -20, 0, 30)
+stopButton.Position = UDim2.new(0, 10, 0, 120)
+stopButton.Text = "Stop Circling"
+stopButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+stopButton.TextColor3 = Color3.new(1, 1, 1)
+stopButton.TextSize = 16
+
+local closeButton = Instance.new("TextButton", frame)
+closeButton.Size = UDim2.new(1, -20, 0, 30)
+closeButton.Position = UDim2.new(0, 10, 0, 160)
+closeButton.Text = "Close GUI"
+closeButton.BackgroundColor3 = Color3.new(0.8, 0.2, 0.2)
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.TextSize = 16
+
+-- Function to find a player by partial name
+local function findPlayerByName(partialName)
+    for _, plr in ipairs(game.Players:GetPlayers()) do
+        if plr.Name:lower():sub(1, #partialName) == partialName:lower() then
+            return plr
+        end
+    end
+    return nil
+end
+
+-- Button functionality
+startButton.MouseButton1Click:Connect(function()
+    stopCircles() -- Stop any existing circles
+    local playerName = inputBox.Text
+    if playerName ~= "" then
+        local targetPlayer = findPlayerByName(playerName)
+        if targetPlayer and targetPlayer.Character then
+            circleAround(targetPlayer.Character)
+        end
+    end
+end)
+
+stopButton.MouseButton1Click:Connect(function()
+    stopCircles()
+end)
+
+closeButton.MouseButton1Click:Connect(function()
+    stopCircles()
+    screenGui:Destroy()
+end)
