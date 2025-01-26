@@ -1,0 +1,25 @@
+MADE BY helminvader
+-- Script to give the player a tool to teleport by cliking anywhere
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local head = character:WaitForChild("Head")
+
+-- Create a tool
+local tool = Instance.new("Tool")
+tool.Name = "Teleport"
+tool.RequiresHandle = false
+tool.Parent = player.Backpack
+
+-- Function to move the head
+local function moveHead(mousePosition)
+    -- Move head to the mouse position (or near it)
+    head.CFrame = CFrame.new(mousePosition)
+end
+
+-- Tool activated
+tool.Activated:Connect(function()
+    local mouse = player:GetMouse()
+    moveHead(mouse.Hit.p)  -- Moves the head to the mouse's position
+end)
