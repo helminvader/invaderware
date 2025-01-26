@@ -8,5 +8,6 @@ some scripts included in this scripthub are not made by me. ( some are )
 - this repository only focuses on the scripts i make myself instead of the scripthub i mentioned.
 
 the scripthub itself has a whitelist so add me on discord if you are interested "@observehere"
-im also looking for people to showcase both the script hub and the scripts i made so js lmk yfm
+im also looking for people to showcase both the script hub and the scripts i made so js lmk yfm.
+
 discord server: https://discord.gg/BcFGcMAXwj
